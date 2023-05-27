@@ -1,4 +1,4 @@
-import cssText from "data-text:~style.css"
+import cssText from "data-text:~styles/styles.css"
 import type { PlasmoCSConfig } from "plasmo"
 
 const Main = () => {
