@@ -2,7 +2,7 @@ import cssText from "data-text:~styles/styles.css"
 import type { PlasmoCSConfig } from "plasmo"
 
 const Main = () => {
-  return <div>Feedhub</div>
+  return <div></div>
 }
 
 export default Main
@@ -14,6 +14,5 @@ export const getStyle = () => {
 }
 
 export const config: PlasmoCSConfig = {
-  all_frames: true,
   run_at: "document_start"
 }

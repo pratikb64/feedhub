@@ -13,4 +13,13 @@
 
 body {
   font-family: "Poppins", sans-serif;
+  @apply bg-slate-900 text-gray-50;
+}
+
+input {
+  @apply bg-slate-800 outline-none ring-2 ring-slate-800 focus:ring-violet-500;
+}
+
+hr {
+  @apply border-gray-800;
 }

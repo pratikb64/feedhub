@@ -11,12 +11,13 @@ const useAccount = () => {
   const client = getClient()
   const account = new Account(client)
 
+  const fetchUser = async () => {
+    const userData = await getAccount()
+    if (userData) setUser(userData)
+    setIsLoading(false)
+  }
+
   useEffect(() => {
-    const fetchUser = async () => {
-      const userData = await getAccount()
-      if (userData) setUser(userData)
-      setIsLoading(false)
-    }
     fetchUser()
   }, [])
 
@@ -38,17 +39,14 @@ const useAccount = () => {
   }: {
     email: string
     password: string
-  }) {
-    let error
-    let session
+  }): Promise<{ session?: Models.Session; error?: AppwriteException }> {
     try {
-      session = await account.createEmailSession(email, password)
+      let session = await account.createEmailSession(email, password)
+      await fetchUser()
+      return { session }
     } catch (error) {
-      if (error instanceof AppwriteException) {
-        error = error.message
-      }
+      return { error: error as AppwriteException }
     }
-    return { session, error }
   }
 
   async function logout() {

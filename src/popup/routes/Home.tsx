@@ -1,31 +1,22 @@
-import { RiAddFill } from "react-icons/ri"
-import { useNavigate } from "react-router-dom"
 import Layout from "~components/Layout"
-import useAccount from "~hooks/useAccount"
 import useCurrentTab from "~hooks/useCurrentTab"
 
 const Home = () => {
-  const { user, logout, isLoading } = useAccount()
-  const navigate = useNavigate()
-  const { tab, data } = useCurrentTab()
-
-  // useEffect(() => {
-  // if (isLoading) return
-  // if (!user) navigate("/login")
-  // }, [user, isLoading])
+  const { data } = useCurrentTab()
 
   return (
     <Layout>
-      <div className="flex flex-col items-center justify-center mt-16">
+      <div className="mt-16 flex flex-col items-center justify-center">
         <div className="text-xl font-semibold">
           You don't have any project yet
         </div>
-        <div className="mt-4 text-sm">
-          Create a new project for <b>{data?.url}</b> get started
+        <div className="mt-4 text-center text-sm text-gray-400">
+          Create a new project for{" "}
+          <b className="text-violet-500">{data?.url}</b> <br /> and get started
         </div>
         <div className="mt-12">
-          <button className="flex items-center p-2 px-4 font-bold text-white rounded-md bg-violet-500 hover:bg-violet-600 active:bg-violet-700">
-            <RiAddFill size={24} />
+          <button className="flex items-center rounded-md bg-violet-500 p-2 px-4 font-bold text-white hover:bg-violet-600 active:bg-violet-700">
+            {/* <RiAddFill size={24} /> */}
             Create Project
           </button>
         </div>
