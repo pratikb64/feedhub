@@ -2,8 +2,11 @@
 module.exports = {
   content: ["./src/**/*.tsx", "./src/**/**/*.tsx"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        poppins: "Poppins, sans-serif"
+      }
+    }
   },
-  plugins: [],
+  plugins: []
 }
-

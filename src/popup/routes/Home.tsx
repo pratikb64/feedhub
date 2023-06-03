@@ -59,7 +59,7 @@ const Home = () => {
             </div>
           </div>
         )}
-        <div>
+        <div className="h-full pb-20">
           {projects?.documents.map((project) => {
             return (
               <ProjectItem
@@ -71,6 +71,15 @@ const Home = () => {
               />
             )
           })}
+        </div>
+        <div className="fixed bottom-5 left-0 w-full">
+          <button
+            onClick={clickHandler}
+            className="m-auto flex w-[95%] items-center justify-center gap-1 rounded-md bg-violet-600 p-2 px-4 font-bold text-white hover:bg-violet-700 active:bg-violet-800 disabled:bg-gray-500"
+            disabled={isLoading}>
+            <RiAddFill size={24} />
+            Create New Project for {data.hostname}
+          </button>
         </div>
       </div>
     </Layout>
