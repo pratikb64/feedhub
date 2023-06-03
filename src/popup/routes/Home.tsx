@@ -18,7 +18,7 @@ const Home = () => {
   const clickHandler = async () => {
     setIsLoading(true)
     await fn("create-project", {
-      domain: data?.url
+      domain: data?.hostname
     })
     await getProjects()
     setIsLoading(false)
@@ -45,13 +45,13 @@ const Home = () => {
             </div>
             <div className="mt-4 text-center text-sm text-gray-400">
               Create a new project for{" "}
-              <b className="text-violet-500">{data?.url}</b> <br /> and get
+              <b className="text-violet-500">{data?.hostname}</b> <br /> and get
               started
             </div>
             <div className="mt-12">
               <button
                 onClick={clickHandler}
-                className="disabled:bggr flex items-center rounded-md bg-violet-500 p-2 px-4 font-bold text-white hover:bg-violet-600 active:bg-violet-700 disabled:bg-gray-500"
+                className="flex items-center gap-1 rounded-md bg-violet-600 p-2 px-4 font-bold text-white hover:bg-violet-700 active:bg-violet-800 disabled:bg-gray-500"
                 disabled={isLoading}>
                 <RiAddFill size={24} />
                 Create Project
@@ -66,6 +66,8 @@ const Home = () => {
                 domain={project.domain}
                 id={project.$id}
                 key={project.$id}
+                getProjects={getProjects}
+                teamId={project.teamId}
               />
             )
           })}

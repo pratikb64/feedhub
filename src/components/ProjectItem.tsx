@@ -1,19 +1,25 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { useState } from "react"
 import { BsThreeDots, BsTrash } from "react-icons/bs"
+import { useNavigate } from "react-router-dom"
 import useDatabase from "~hooks/useDatabase"
+import useTeams from "~hooks/useTeams"
 
 const ProjectItem = ({
   domain,
   id,
+  teamId,
   getProjects
 }: {
   domain: string
   id: string
+  teamId: string
   getProjects: () => void
 }) => {
   const [deleteClicked, setDeleteClicked] = useState(false)
   const { deleteDocument } = useDatabase()
+  const { deleteTeam } = useTeams()
+  const navigate = useNavigate()
 
   const deleteHandler = async () => {
     //TODO: delete all comments relate to respective project
@@ -24,9 +30,13 @@ const ProjectItem = ({
       .catch((err) => {
         console.log(err)
       })
+    await deleteTeam(teamId)
   }
 
-  const openHandler = () => {}
+  const openHandler = () => {
+    navigate("/project/" + id)
+  }
+
   return (
     <div
       onClick={openHandler}
