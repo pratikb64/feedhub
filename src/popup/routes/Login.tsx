@@ -82,7 +82,7 @@ const Login = () => {
         <span className="text-xs text-red-500">
           {formState.errors.root?.message}
         </span>
-        <button className="mt-4 rounded-md bg-violet-500 p-2 px-4 font-bold text-white hover:bg-violet-600 active:bg-violet-700">
+        <button className="mt-4 rounded-md bg-violet-600 p-2 px-4 font-bold text-white hover:bg-violet-700 active:bg-violet-800">
           Login
         </button>
       </form>

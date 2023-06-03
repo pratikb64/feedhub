@@ -1,7 +1,9 @@
 import { useMessage } from "@plasmohq/messaging/hook"
 import cssText from "data-text:~styles/styles.css"
 import type { PlasmoCSConfig } from "plasmo"
+import { useEffect, useState } from "react"
 import { useStore } from "zustand"
+import useDatabase from "~hooks/useDatabase"
 import drawerState from "~states/drawerState"
 
 const Drawer = () => {
@@ -12,6 +14,35 @@ const Drawer = () => {
       res.send("ok")
     }
   })
+  const [activeProject, setActiveProject] = useState<
+    | {
+        id: string
+        domain: string
+      }
+    | undefined
+  >()
+  const { getDocumentList } = useDatabase()
+
+  const getProjects = async () => {
+    const projects = await getDocumentList({
+      collectionId: "projects"
+    })
+    const projectExist = projects.documents.find(
+      (project) => project.domain == window.location.hostname
+    )
+    if (projectExist) {
+      setActiveProject({
+        domain: projectExist.domain,
+        id: projectExist.$id
+      })
+    }
+  }
+
+  useEffect(() => {
+    getProjects()
+  }, [])
+
+  if (!activeProject) return <></>
 
   return (
     <div

@@ -3,7 +3,7 @@ import { useState } from "react"
 const useCurrentTab = () => {
   const [tab, setTab] = useState<chrome.tabs.Tab | null>(null)
   const [data, setData] = useState({
-    url: "",
+    hostname: "",
     pathname: ""
   })
   chrome.tabs
@@ -14,9 +14,8 @@ const useCurrentTab = () => {
       let url
       if (tab.url) {
         url = new URL(tab.url)
-        url.pathname
         setData({
-          url: url.hostname,
+          hostname: url.hostname,
           pathname: url.pathname
         })
       }

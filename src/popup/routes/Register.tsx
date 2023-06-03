@@ -88,7 +88,7 @@ const Register = () => {
             {formState.errors.password?.message}
           </span>
         </div>
-        <button className="rounded-md bg-violet-500 p-2 px-4 font-bold text-white hover:bg-violet-600 active:bg-violet-700">
+        <button className="rounded-md bg-violet-600 p-2 px-4 font-bold text-white hover:bg-violet-700 active:bg-violet-800">
           Create account
         </button>
       </form>
