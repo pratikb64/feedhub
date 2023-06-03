@@ -50,7 +50,8 @@ const ProjectItem = ({
           <DropdownMenu.Trigger asChild>
             <button
               aria-label="Profile menu"
-              className="flex items-center gap-1">
+              className="flex items-center gap-1"
+              title="More options">
               <BsThreeDots size={22} />
             </button>
           </DropdownMenu.Trigger>
@@ -62,7 +63,8 @@ const ProjectItem = ({
                 <DropdownMenu.Item className="rounded-md outline-none hover:bg-slate-700">
                   <button
                     onClick={deleteHandler}
-                    className="flex w-full items-center gap-1 p-2 font-semibold text-red-500">
+                    className="flex w-full items-center gap-1 p-2 font-semibold text-red-500"
+                    title="Delete project confirmation">
                     Are you sure?
                   </button>
                 </DropdownMenu.Item>
@@ -70,7 +72,8 @@ const ProjectItem = ({
                 <div className="rounded-md outline-none hover:bg-slate-700">
                   <button
                     onClick={() => setDeleteClicked(true)}
-                    className="flex w-full items-center gap-1  p-2 font-semibold text-red-500">
+                    className="flex w-full items-center gap-1  p-2 font-semibold text-red-500"
+                    title="Delete project">
                     <BsTrash size={18} />
                     Delete
                   </button>

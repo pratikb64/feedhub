@@ -14,7 +14,8 @@ const Navbar = () => {
           <DropdownMenu.Trigger asChild>
             <button
               aria-label="Profile menu"
-              className="flex items-center gap-1">
+              className="flex items-center gap-1"
+              title="Profile menu">
               {user?.name}
               <FaChevronDown size={14} />
             </button>
@@ -26,7 +27,7 @@ const Navbar = () => {
               <DropdownMenu.Item
                 className="cursor-pointer rounded-md p-2 outline-none hover:bg-slate-700"
                 onClick={logout}>
-                <button className="flex items-center gap-1">
+                <button className="flex items-center gap-1" title="Logout">
                   <BiLogOut size={20} className="m-0" /> <div>Logout</div>
                 </button>
               </DropdownMenu.Item>

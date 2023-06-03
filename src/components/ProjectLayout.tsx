@@ -9,7 +9,7 @@ const ProjectLayout = ({ children }: { children: React.ReactNode }) => {
     <div className="h-[650px] w-[500px] text-base">
       <div className="flex items-center justify-between bg-slate-800 p-4">
         <div className="flex items-center gap-4">
-          <button onClick={() => navigate(-1)}>
+          <button onClick={() => navigate(-1)} title="Go back">
             <IoArrowBackOutline size={22} />
           </button>
           <div>Project name</div>

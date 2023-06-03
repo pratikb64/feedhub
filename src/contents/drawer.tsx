@@ -66,7 +66,7 @@ const Drawer = () => {
         }`}>
         <div className="flex items-center justify-between bg-slate-800 p-4">
           <div className="font-bold">Project name</div>
-          <button onClick={toggle}>
+          <button onClick={toggle} title="Close Side Drawer">
             <RiCloseFill size={26} />
           </button>
         </div>
@@ -80,12 +80,14 @@ const Drawer = () => {
           hidden={isVisible}>
           <button
             onClick={toggle}
-            className="rounded-full bg-gray-50 p-2 shadow-md">
+            className="rounded-full bg-gray-50 p-2 shadow-md"
+            title="Open Side Drawer">
             <RiChatCheckFill size={30} className="text-violet-500" />
           </button>
           <button
             onClick={closeProject}
-            className="rounded-full bg-gray-50 p-2 shadow-md">
+            className="rounded-full bg-gray-50 p-2 shadow-md"
+            title="Close Project">
             <RiCloseFill size={30} className="text-violet-500" />
           </button>
         </div>

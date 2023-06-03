@@ -52,7 +52,8 @@ const Home = () => {
               <button
                 onClick={clickHandler}
                 className="flex items-center gap-1 rounded-md bg-violet-600 p-2 px-4 font-bold text-white hover:bg-violet-700 active:bg-violet-800 disabled:bg-gray-500"
-                disabled={isLoading}>
+                disabled={isLoading}
+                title="Create New Project">
                 <RiAddFill size={24} />
                 Create Project
               </button>
@@ -76,7 +77,8 @@ const Home = () => {
           <button
             onClick={clickHandler}
             className="m-auto flex w-[95%] items-center justify-center gap-1 rounded-md bg-violet-600 p-2 px-4 font-bold text-white hover:bg-violet-700 active:bg-violet-800 disabled:bg-gray-500"
-            disabled={isLoading}>
+            disabled={isLoading}
+            title="Create New Project">
             <RiAddFill size={24} />
             Create New Project for {data.hostname}
           </button>
