@@ -1,10 +1,30 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { useState } from "react"
 import { BsThreeDots, BsTrash } from "react-icons/bs"
+import useDatabase from "~hooks/useDatabase"
 
-const ProjectItem = ({ domain, id }: { domain: string; id: string }) => {
+const ProjectItem = ({
+  domain,
+  id,
+  getProjects
+}: {
+  domain: string
+  id: string
+  getProjects: () => void
+}) => {
   const [deleteClicked, setDeleteClicked] = useState(false)
-  const deleteHandler = () => {}
+  const { deleteDocument } = useDatabase()
+
+  const deleteHandler = async () => {
+    //TODO: delete all comments relate to respective project
+    await deleteDocument({ collectionId: "projects", documentId: id })
+      .then(() => {
+        getProjects()
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
   const openHandler = () => {}
   return (

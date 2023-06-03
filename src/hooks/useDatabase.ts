@@ -57,7 +57,22 @@ const useDatabase = () => {
     return document
   }
 
-  return { createDocument, getDocument, getDocumentList }
+  const deleteDocument = async ({
+    collectionId,
+    documentId
+  }: {
+    collectionId: string
+    documentId: string
+  }) => {
+    const document = await databases.deleteDocument(
+      "prod",
+      collectionId,
+      documentId
+    )
+    return document
+  }
+
+  return { createDocument, getDocument, getDocumentList, deleteDocument }
 }
 
 export default useDatabase
