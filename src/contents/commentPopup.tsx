@@ -17,9 +17,11 @@ const CommentPopup = () => {
     if (container) {
       const { right, left, bottom, top } = container.getBoundingClientRect()
       if (right > window.innerWidth)
-        container.style.left = left - (right - window.innerWidth) - 16 + "px"
+        container.style.left =
+          left - (right - window.innerWidth) - 16 + window.scrollX + "px"
       if (bottom > window.innerHeight)
-        container.style.top = top - (bottom - window.innerHeight) - 16 + "px"
+        container.style.top =
+          top - (bottom - window.innerHeight) - 16 + window.scrollY + "px"
     }
   }, [positionX, positionY])
 
