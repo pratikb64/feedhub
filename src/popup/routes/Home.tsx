@@ -60,7 +60,7 @@ const Home = () => {
             </div>
           </div>
         )}
-        <div className="h-full pb-20">
+        <div className="m-4 flex flex-col gap-2 pb-20">
           {projects?.documents.map((project) => {
             return (
               <ProjectItem

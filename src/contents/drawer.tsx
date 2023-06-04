@@ -3,11 +3,16 @@ import type { Models } from "appwrite"
 import cssText from "data-text:~styles/styles.css"
 import type { PlasmoCSConfig } from "plasmo"
 import { useEffect, useState } from "react"
-import { RiChatCheckFill, RiCloseFill } from "react-icons/ri"
+import { AiOutlineComment } from "react-icons/ai"
+import { BiCommentAdd, BiCommentX } from "react-icons/bi"
+import { RiCloseFill } from "react-icons/ri"
 import { useStore } from "zustand"
 import Comment from "~components/Comment"
 import useDatabase from "~hooks/useDatabase"
 import drawerState from "~states/drawerState"
+import addComment from "~utils/addComment"
+import removeBgColor from "~utils/removeBgColor"
+import setBgColor from "~utils/setBgColor"
 
 const Drawer = () => {
   const { isVisible, toggle } = useStore(drawerState)
@@ -27,6 +32,7 @@ const Drawer = () => {
     | undefined
   >()
   const { getDocumentList } = useDatabase()
+  const [addCommentActivated, setAddCommentActivated] = useState(false)
 
   const activateProject = (projects: Models.DocumentList<Models.Document>) => {
     const projectExist = projects?.documents.find(
@@ -56,6 +62,21 @@ const Drawer = () => {
     setActiveProject(undefined)
   }
 
+  const toggleAddComment = () => {
+    if (addCommentActivated) {
+      document.removeEventListener("mouseover", setBgColor, true)
+      document.removeEventListener("mouseout", removeBgColor, true)
+      document.removeEventListener("click", addComment, true)
+      setAddCommentActivated(false)
+    }
+    if (!addCommentActivated) {
+      document.addEventListener("mouseover", setBgColor, true)
+      document.addEventListener("mouseout", removeBgColor, true)
+      document.addEventListener("click", addComment, true)
+      setAddCommentActivated(true)
+    }
+  }
+
   if (!activeProject) return <></>
 
   return (
@@ -79,16 +100,30 @@ const Drawer = () => {
           className="fixed bottom-8 left-8 flex flex-col gap-4"
           hidden={isVisible}>
           <button
+            onClick={toggleAddComment}
+            className={`flex items-center justify-center rounded-full p-2.5 text-gray-50 shadow-md ${
+              addCommentActivated
+                ? "bg-red-500 hover:bg-red-700 active:bg-red-800"
+                : "bg-violet-500 hover:bg-violet-700 active:bg-violet-800"
+            }`}
+            title={addCommentActivated ? "Cancel comment" : "Add comment"}>
+            {addCommentActivated ? (
+              <BiCommentX size={26} />
+            ) : (
+              <BiCommentAdd size={26} />
+            )}
+          </button>
+          <button
             onClick={toggle}
-            className="rounded-full bg-gray-50 p-2 shadow-md"
+            className="rounded-full bg-white p-2 shadow-md hover:bg-gray-200 active:bg-gray-300"
             title="Open Side Drawer">
-            <RiChatCheckFill size={30} className="text-violet-500" />
+            <AiOutlineComment size={30} className="text-violet-500" />
           </button>
           <button
             onClick={closeProject}
-            className="rounded-full bg-gray-50 p-2 shadow-md"
+            className="rounded-full bg-white p-2 shadow-md hover:bg-gray-200 active:bg-gray-300"
             title="Close Project">
-            <RiCloseFill size={30} className="text-violet-500" />
+            <RiCloseFill size={30} className="text-red-500" />
           </button>
         </div>
       </div>
