@@ -8,13 +8,16 @@ import { BiCommentAdd, BiCommentX } from "react-icons/bi"
 import { RiCloseFill } from "react-icons/ri"
 import { useStore } from "zustand"
 import Comment from "~components/Comment"
+import useComments from "~hooks/useComments"
 import useDatabase from "~hooks/useDatabase"
 import commentPopupState from "~states/commentPopupState"
 import drawerState from "~states/drawerState"
 import toggleAddComment from "~utils/toggleAddComment"
+import type { CommentDocument, Project } from "~utils/types"
 
 const Drawer = () => {
-  const { isVisible, toggle } = useStore(drawerState)
+  const { isVisible, toggle, setActiveProject, activeProject } =
+    useStore(drawerState)
   const [projects, setProjects] =
     useState<Models.DocumentList<Models.Document>>()
   useMessage<string, string>(async (req, res) => {
@@ -23,25 +26,20 @@ const Drawer = () => {
       res.send("ok")
     }
   })
-  const [activeProject, setActiveProject] = useState<
-    | {
-        id: string
-        domain: string
-      }
-    | undefined
+  const [comments, setComments] = useState<
+    Models.DocumentList<CommentDocument> | undefined
   >()
   const { getDocumentList } = useDatabase()
   const { addCommentActivated } = useStore(commentPopupState)
+  const { allComments } = useComments()
 
   const activateProject = (projects: Models.DocumentList<Models.Document>) => {
     const projectExist = projects?.documents.find(
       (project) => project.domain == window.location.hostname
-    )
+    ) as Models.Document & Project
+
     if (projectExist) {
-      setActiveProject({
-        domain: projectExist.domain,
-        id: projectExist.$id
-      })
+      setActiveProject(projectExist)
     }
   }
 
@@ -57,12 +55,15 @@ const Drawer = () => {
     getProjects()
   }, [])
 
+  useEffect(() => {
+    if (isVisible) allComments().then((comments) => setComments(comments))
+  }, [isVisible])
+
   const closeProject = () => {
     setActiveProject(undefined)
   }
 
   if (!activeProject) return <></>
-
   return (
     <div>
       <div
@@ -70,13 +71,22 @@ const Drawer = () => {
           isVisible ? "translate-x-0" : ""
         }`}>
         <div className="flex items-center justify-between bg-slate-800 p-4">
-          <div className="font-bold">Project name</div>
+          <div className="flex items-center gap-2 font-bold">
+            <img
+              src={"https://icon.horse/icon/" + activeProject.domain}
+              alt="favicon"
+              className="w-6"
+            />
+            {activeProject.domain}
+          </div>
           <button onClick={toggle} title="Close Side Drawer">
             <RiCloseFill size={26} />
           </button>
         </div>
         <div className="m-4">
-          <Comment />
+          {comments?.documents.map((comment) => (
+            <Comment key={comment.$id} data={comment} />
+          ))}
         </div>
       </div>
       <div>

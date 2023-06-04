@@ -9,17 +9,20 @@ const useDatabase = () => {
   const createDocument = async ({
     collectionId,
     data,
-    documentId = ID.unique()
+    documentId = ID.unique(),
+    permissions
   }: {
     collectionId: string
     data: any
     documentId?: string
+    permissions?: string[]
   }) => {
     const document = await databases.createDocument(
       "prod",
       collectionId,
       documentId,
-      data
+      data,
+      permissions
     )
     return document
   }

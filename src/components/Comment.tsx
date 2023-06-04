@@ -1,12 +1,17 @@
 import { BsTrash } from "react-icons/bs"
 import { MdMyLocation } from "react-icons/md"
+import dateDifference from "~utils/dateDifference"
+import type { CommentDocument } from "~utils/types"
 
-const Comment = () => {
+const Comment = ({ data }: { data: CommentDocument }) => {
   return (
     <div className="w-full rounded-md border-2 border-gray-700 p-3 text-sm">
       <div className="flex items-center justify-between">
         <div className="font-bold">
-          John snow <span className="text-xs font-normal">• 2 min ago</span>
+          {data.owner}{" "}
+          <span className="text-[10px] font-normal">
+            • {dateDifference(new Date(data.$createdAt))}
+          </span>
         </div>
         <div className="flex gap-2">
           <button
@@ -22,7 +27,7 @@ const Comment = () => {
         </div>
       </div>
       <hr className="-mx-3 my-3 border-gray-700" />
-      <div className="">Some Message</div>
+      <div className="">{data.message}</div>
     </div>
   )
 }
