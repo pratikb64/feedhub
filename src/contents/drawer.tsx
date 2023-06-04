@@ -9,10 +9,9 @@ import { RiCloseFill } from "react-icons/ri"
 import { useStore } from "zustand"
 import Comment from "~components/Comment"
 import useDatabase from "~hooks/useDatabase"
+import commentPopupState from "~states/commentPopupState"
 import drawerState from "~states/drawerState"
-import addComment from "~utils/addComment"
-import removeBgColor from "~utils/removeBgColor"
-import setBgColor from "~utils/setBgColor"
+import toggleAddComment from "~utils/toggleAddComment"
 
 const Drawer = () => {
   const { isVisible, toggle } = useStore(drawerState)
@@ -32,7 +31,7 @@ const Drawer = () => {
     | undefined
   >()
   const { getDocumentList } = useDatabase()
-  const [addCommentActivated, setAddCommentActivated] = useState(false)
+  const { addCommentActivated } = useStore(commentPopupState)
 
   const activateProject = (projects: Models.DocumentList<Models.Document>) => {
     const projectExist = projects?.documents.find(
@@ -60,21 +59,6 @@ const Drawer = () => {
 
   const closeProject = () => {
     setActiveProject(undefined)
-  }
-
-  const toggleAddComment = () => {
-    if (addCommentActivated) {
-      document.removeEventListener("mouseover", setBgColor, true)
-      document.removeEventListener("mouseout", removeBgColor, true)
-      document.removeEventListener("click", addComment, true)
-      setAddCommentActivated(false)
-    }
-    if (!addCommentActivated) {
-      document.addEventListener("mouseover", setBgColor, true)
-      document.addEventListener("mouseout", removeBgColor, true)
-      document.addEventListener("click", addComment, true)
-      setAddCommentActivated(true)
-    }
   }
 
   if (!activeProject) return <></>
@@ -116,7 +100,7 @@ const Drawer = () => {
           <button
             onClick={toggle}
             className="rounded-full bg-white p-2 shadow-md hover:bg-gray-200 active:bg-gray-300"
-            title="Open Side Drawer">
+            title="View All Comments">
             <AiOutlineComment size={30} className="text-violet-500" />
           </button>
           <button
