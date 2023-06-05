@@ -11,13 +11,16 @@ import Comment from "~components/Comment"
 import useComments from "~hooks/useComments"
 import useDatabase from "~hooks/useDatabase"
 import commentPopupState from "~states/commentPopupState"
+import commentsState from "~states/commentsState"
 import drawerState from "~states/drawerState"
+import projectState from "~states/projectState"
 import toggleAddComment from "~utils/toggleAddComment"
-import type { CommentDocument, Project } from "~utils/types"
+import type { Project } from "~utils/types"
 
 const Drawer = () => {
-  const { isVisible, toggle, setActiveProject, activeProject } =
-    useStore(drawerState)
+  const { isVisible, toggle } = useStore(drawerState)
+  const { activeProject, setActiveProject, setIsProductFetching } =
+    useStore(projectState)
   const [projects, setProjects] =
     useState<Models.DocumentList<Models.Document>>()
   useMessage<string, string>(async (req, res) => {
@@ -26,11 +29,9 @@ const Drawer = () => {
       res.send("ok")
     }
   })
-  const [comments, setComments] = useState<
-    Models.DocumentList<CommentDocument> | undefined
-  >()
   const { getDocumentList } = useDatabase()
   const { addCommentActivated } = useStore(commentPopupState)
+  const { comments, setComments } = useStore(commentsState)
   const { allComments } = useComments()
 
   const activateProject = (projects: Models.DocumentList<Models.Document>) => {
@@ -40,6 +41,7 @@ const Drawer = () => {
 
     if (projectExist) {
       setActiveProject(projectExist)
+      setIsProductFetching(false)
     }
   }
 
@@ -67,7 +69,7 @@ const Drawer = () => {
   return (
     <div>
       <div
-        className={`fixed left-0 top-0 z-10 h-screen w-screen -translate-x-full transform bg-slate-900 font-poppins text-gray-50 transition-transform duration-300 ease-in-out sm:w-[380px] ${
+        className={`fixed left-0 top-0 z-10 h-screen w-screen -translate-x-full transform overflow-auto bg-slate-900 font-poppins text-gray-50 transition-transform duration-300 ease-in-out sm:w-[380px] ${
           isVisible ? "translate-x-0" : ""
         }`}>
         <div className="flex items-center justify-between bg-slate-800 p-4">
@@ -83,7 +85,7 @@ const Drawer = () => {
             <RiCloseFill size={26} />
           </button>
         </div>
-        <div className="m-4">
+        <div className="m-4 flex flex-col gap-2">
           {comments?.documents.map((comment) => (
             <Comment key={comment.$id} data={comment} />
           ))}

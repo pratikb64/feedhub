@@ -1,7 +1,6 @@
-import type { HTMLElementEvent } from "./types"
-
-export default function removeHighlight(e: MouseEvent) {
-  const event = e as HTMLElementEvent
-  event.target.style.backgroundColor = ""
-  event.target.style.boxShadow = ""
+export default function removeHighlight(element: HTMLElement | null) {
+  if (element) {
+    element.style.backgroundColor = ""
+    element.style.boxShadow = ""
+  }
 }

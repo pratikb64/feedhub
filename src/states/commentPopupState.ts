@@ -6,7 +6,7 @@ const commentPopupState = createStore<CommentPopupState>((set, get) => ({
   positionX: 0,
   positionY: 0,
   xPath: "",
-  toggle: () => {
+  toggleIsCommentPopupVisible: () => {
     set({ isVisible: !get().isVisible })
   },
   setData: ({ positionX, positionY, xPath }) => {
@@ -20,7 +20,7 @@ interface CommentPopupState {
   positionX: number
   positionY: number
   xPath: string
-  toggle: () => void
+  toggleIsCommentPopupVisible: () => void
   setData: ({
     positionX,
     positionY,

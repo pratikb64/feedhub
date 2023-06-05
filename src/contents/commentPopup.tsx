@@ -9,7 +9,7 @@ import { useStore } from "zustand"
 import useAccount from "~hooks/useAccount"
 import useComments from "~hooks/useComments"
 import commentPopupState from "~states/commentPopupState"
-import drawerState from "~states/drawerState"
+import projectState from "~states/projectState"
 import toggleAddComment from "~utils/toggleAddComment"
 
 const formSchema = z.object({
@@ -17,9 +17,14 @@ const formSchema = z.object({
 })
 
 const CommentPopup = () => {
-  const { isVisible, positionX, positionY, xPath, toggle } =
-    useStore(commentPopupState)
-  const { activeProject } = useStore(drawerState)
+  const {
+    isVisible,
+    positionX,
+    positionY,
+    xPath,
+    toggleIsCommentPopupVisible
+  } = useStore(commentPopupState)
+  const { activeProject } = useStore(projectState)
   const { user } = useAccount()
   const containerRef = useRef<HTMLDivElement | null>(null)
   const { register, handleSubmit, formState, reset } = useForm<
@@ -47,7 +52,7 @@ const CommentPopup = () => {
   }, [positionX, positionY])
 
   const handleCancel = () => {
-    toggle()
+    toggleIsCommentPopupVisible()
     toggleAddComment()
   }
 
@@ -68,7 +73,7 @@ const CommentPopup = () => {
       throw new Error(
         "Active project or User not found after submitting comment"
       )
-    toggle()
+    toggleIsCommentPopupVisible()
     toggleAddComment()
     reset()
   }

@@ -1,11 +1,11 @@
 import { Permission, Query, Role, type Models } from "appwrite"
-import drawerState from "~states/drawerState"
+import projectState from "~states/projectState"
 import type { Comment, CommentDocument } from "~utils/types"
 import useDatabase from "./useDatabase"
 
 const useComments = () => {
   const { createDocument, getDocumentList } = useDatabase()
-  const { activeProject } = drawerState.getState()
+  const { activeProject } = projectState.getState()
 
   const allComments = async () => {
     if (activeProject) {
