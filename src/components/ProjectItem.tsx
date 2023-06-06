@@ -1,8 +1,10 @@
+import { sendToContentScript } from "@plasmohq/messaging"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { useState } from "react"
 import { BsThreeDots, BsTrash } from "react-icons/bs"
 import { useNavigate } from "react-router-dom"
 import { useStore } from "zustand"
+import useCurrentTab from "~hooks/useCurrentTab"
 import useDatabase from "~hooks/useDatabase"
 import useTeams from "~hooks/useTeams"
 import projectState from "~states/projectState"
@@ -26,6 +28,7 @@ const ProjectItem = ({
   const { deleteTeam } = useTeams()
   const navigate = useNavigate()
   const { setActiveProject } = useStore(projectState)
+  const { data: currentTabData } = useCurrentTab()
 
   const deleteHandler = async () => {
     //TODO: delete all comments relate to respective project
@@ -39,9 +42,14 @@ const ProjectItem = ({
     await deleteTeam(teamId)
   }
 
-  const openHandler = () => {
+  const openHandler = async () => {
     navigate("/project/" + id)
     setActiveProject(data)
+    if (currentTabData.hostname == data.domain)
+      await sendToContentScript({
+        name: "activate-project",
+        body: id
+      })
   }
 
   return (

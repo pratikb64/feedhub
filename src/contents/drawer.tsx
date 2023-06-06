@@ -2,7 +2,7 @@ import { useMessage } from "@plasmohq/messaging/hook"
 import type { Models } from "appwrite"
 import cssText from "data-text:~styles/styles.css"
 import type { PlasmoCSConfig } from "plasmo"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { AiOutlineComment } from "react-icons/ai"
 import { BiCommentAdd, BiCommentX } from "react-icons/bi"
 import { RiCloseFill } from "react-icons/ri"
@@ -21,12 +21,17 @@ const Drawer = () => {
   const { isVisible, toggleIsDrawerVisible } = useStore(drawerState)
   const { activeProject, setActiveProject, setIsProductFetching } =
     useStore(projectState)
-  const [projects, setProjects] =
-    useState<Models.DocumentList<Models.Document>>()
+  // This is how plasmo extension offers message passing, some better way can be coded to listen particular event source I guess?
   useMessage<string, string>(async (req, res) => {
     if (req.name == "toggle-drawer") {
       toggleIsDrawerVisible()
       res.send("ok")
+    }
+    if (req.name == "activate-project") {
+      if (req.body && req.body.trim() != "") {
+        activateProjectById(req.body)
+        res.send("ok")
+      }
     }
   })
   const { getDocumentList } = useDatabase()
@@ -34,11 +39,13 @@ const Drawer = () => {
   const { comments } = useStore(commentsState)
   const { syncComments } = useComments()
 
-  const activateProject = (projects: Models.DocumentList<Models.Document>) => {
-    const projectExist = projects?.documents.find(
-      (project) => project.domain == window.location.hostname
+  const activateProjectById = async (id: string) => {
+    const projects = await getDocumentList({
+      collectionId: "projects"
+    })
+    const projectExist = projects.documents.find(
+      (project) => project.$id == id
     ) as Models.Document & Project
-
     if (projectExist) {
       setActiveProject(projectExist)
       setIsProductFetching(false)
@@ -49,8 +56,14 @@ const Drawer = () => {
     const projects = await getDocumentList({
       collectionId: "projects"
     })
-    setProjects(projects)
-    activateProject(projects)
+    const projectExist = projects.documents.find(
+      (project) => project.domain == window.location.hostname
+    ) as Models.Document & Project
+
+    if (projectExist) {
+      setActiveProject(projectExist)
+      setIsProductFetching(false)
+    }
   }
 
   useEffect(() => {
