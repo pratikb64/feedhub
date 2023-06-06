@@ -10,6 +10,8 @@ export interface Project {
   teamId: string
 }
 
+export type ProjectDocument = Models.Document & Project
+
 export interface Comment {
   pathname: string
   message: string

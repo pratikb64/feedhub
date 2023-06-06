@@ -6,6 +6,7 @@ import ProjectItem from "~components/ProjectItem"
 import useCurrentTab from "~hooks/useCurrentTab"
 import useDatabase from "~hooks/useDatabase"
 import useFunctions from "~hooks/useFunctions"
+import type { ProjectDocument } from "~utils/types"
 
 const Home = () => {
   const { data } = useCurrentTab()
@@ -64,6 +65,7 @@ const Home = () => {
           {projects?.documents.map((project) => {
             return (
               <ProjectItem
+                data={project as ProjectDocument}
                 domain={project.domain}
                 id={project.$id}
                 key={project.$id}
