@@ -1,8 +1,6 @@
 import { BsTrash } from "react-icons/bs"
 import { MdMyLocation } from "react-icons/md"
-import { useStore } from "zustand"
 import useComments from "~hooks/useComments"
-import commentsState from "~states/commentsState"
 import dateDifference from "~utils/dateDifference"
 import getElementByXPath from "~utils/getElementByXPath"
 import removeHighlight from "~utils/removeHighlight"
@@ -10,8 +8,7 @@ import setHighlight from "~utils/setHighlight"
 import type { CommentDocument } from "~utils/types"
 
 const Comment = ({ data }: { data: CommentDocument }) => {
-  const { deleteComment, allComments } = useComments()
-  const { comments, setComments } = useStore(commentsState)
+  const { deleteComment, syncComments } = useComments()
 
   const focusElement = () => {
     const element = getElementByXPath(data.xPath)
@@ -30,7 +27,7 @@ const Comment = ({ data }: { data: CommentDocument }) => {
 
   const deleteHandler = async () => {
     await deleteComment({ commentId: data.$id }).then(() => {
-      allComments().then((comments) => setComments(comments))
+      syncComments()
     })
   }
 

@@ -31,8 +31,8 @@ const Drawer = () => {
   })
   const { getDocumentList } = useDatabase()
   const { addCommentActivated } = useStore(commentPopupState)
-  const { comments, setComments } = useStore(commentsState)
-  const { allComments } = useComments()
+  const { comments } = useStore(commentsState)
+  const { syncComments } = useComments()
 
   const activateProject = (projects: Models.DocumentList<Models.Document>) => {
     const projectExist = projects?.documents.find(
@@ -58,7 +58,7 @@ const Drawer = () => {
   }, [])
 
   useEffect(() => {
-    if (isVisible) allComments().then((comments) => setComments(comments))
+    if (isVisible) syncComments()
   }, [isVisible])
 
   const closeProject = () => {

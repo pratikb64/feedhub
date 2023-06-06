@@ -35,7 +35,7 @@ const CommentPopup = () => {
       comment: ""
     }
   })
-  const { addComment } = useComments()
+  const { addComment, syncComments } = useComments()
 
   useEffect(() => {
     // Check if comment popup is going out of viewport and adjust it with offset
@@ -62,8 +62,8 @@ const CommentPopup = () => {
       await addComment({
         message: data.comment,
         pathname,
-        positionX,
-        positionY,
+        positionX: Math.trunc(positionX),
+        positionY: Math.trunc(positionY),
         innerWidth: window.innerWidth,
         project: activeProject.$id,
         xPath,
@@ -73,6 +73,7 @@ const CommentPopup = () => {
       throw new Error(
         "Active project or User not found after submitting comment"
       )
+    syncComments()
     toggleIsCommentPopupVisible()
     toggleAddComment()
     reset()
