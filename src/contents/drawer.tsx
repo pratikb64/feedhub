@@ -18,14 +18,14 @@ import toggleAddComment from "~utils/toggleAddComment"
 import type { Project } from "~utils/types"
 
 const Drawer = () => {
-  const { isVisible, toggle } = useStore(drawerState)
+  const { isVisible, toggleIsDrawerVisible } = useStore(drawerState)
   const { activeProject, setActiveProject, setIsProductFetching } =
     useStore(projectState)
   const [projects, setProjects] =
     useState<Models.DocumentList<Models.Document>>()
   useMessage<string, string>(async (req, res) => {
     if (req.name == "toggle-drawer") {
-      toggle()
+      toggleIsDrawerVisible()
       res.send("ok")
     }
   })
@@ -81,11 +81,11 @@ const Drawer = () => {
             />
             {activeProject.domain}
           </div>
-          <button onClick={toggle} title="Close Side Drawer">
+          <button onClick={toggleIsDrawerVisible} title="Close Side Drawer">
             <RiCloseFill size={26} />
           </button>
         </div>
-        <div className="m-4 flex flex-col gap-2">
+        <div className="m-4 flex flex-col gap-4">
           {comments?.documents.map((comment) => (
             <Comment key={comment.$id} data={comment} />
           ))}
@@ -110,7 +110,7 @@ const Drawer = () => {
             )}
           </button>
           <button
-            onClick={toggle}
+            onClick={toggleIsDrawerVisible}
             className="rounded-full bg-white p-2 shadow-md hover:bg-gray-200 active:bg-gray-300"
             title="View All Comments">
             <AiOutlineComment size={30} className="text-violet-500" />
