@@ -23,16 +23,10 @@ const Drawer = () => {
     useStore(projectState)
   // This is how plasmo extension offers message passing, some better way can be coded to listen particular event source I guess?
   useMessage<string, string>(async (req, res) => {
-    if (req.name == "toggle-drawer") {
-      toggleIsDrawerVisible()
-      res.send("ok")
-    }
-    if (req.name == "activate-project") {
-      if (req.body && req.body.trim() != "") {
-        activateProjectById(req.body)
-        res.send("ok")
-      }
-    }
+    if (req.name == "toggle-drawer") toggleIsDrawerVisible()
+
+    if (req.name == "activate-project")
+      if (req.body && req.body.trim() != "") activateProjectById(req.body)
   })
   const { getDocumentList } = useDatabase()
   const { addCommentActivated } = useStore(commentPopupState)

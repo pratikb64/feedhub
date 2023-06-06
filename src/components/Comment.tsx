@@ -1,34 +1,34 @@
+import { sendToContentScript } from "@plasmohq/messaging"
 import { BsTrash } from "react-icons/bs"
 import { MdMyLocation } from "react-icons/md"
 import useComments from "~hooks/useComments"
 import dateDifference from "~utils/dateDifference"
-import getElementByXPath from "~utils/getElementByXPath"
-import removeHighlight from "~utils/removeHighlight"
-import setHighlight from "~utils/setHighlight"
+import focusElement from "~utils/focusElement"
 import type { CommentDocument } from "~utils/types"
 
-const Comment = ({ data }: { data: CommentDocument }) => {
+const Comment = ({
+  data,
+  inPopup = false
+}: {
+  data: CommentDocument
+  inPopup?: boolean
+}) => {
   const { deleteComment, syncComments } = useComments()
-
-  const focusElement = () => {
-    const element = getElementByXPath(data.xPath)
-    if (element) {
-      element.focus()
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      })
-      setHighlight(element)
-      setTimeout(() => {
-        removeHighlight(element)
-      }, 700)
-    }
-  }
 
   const deleteHandler = async () => {
     await deleteComment({ commentId: data.$id }).then(() => {
       syncComments()
     })
+  }
+
+  const highlightElement = () => {
+    if (inPopup) {
+      return sendToContentScript({
+        name: "locate-comment",
+        body: data.xPath
+      })
+    }
+    focusElement(data.xPath)
   }
 
   return (
@@ -44,7 +44,7 @@ const Comment = ({ data }: { data: CommentDocument }) => {
           <button
             className="rounded-md p-1 hover:bg-gray-600"
             title="Locate comment"
-            onClick={focusElement}>
+            onClick={highlightElement}>
             <MdMyLocation size={18} />
           </button>
           <button

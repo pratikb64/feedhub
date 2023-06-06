@@ -1,3 +1,4 @@
+import { useMessage } from "@plasmohq/messaging/hook"
 import cssText from "data-text:~styles/styles.css"
 import type { PlasmoCSConfig } from "plasmo"
 import { useEffect, useRef, useState } from "react"
@@ -7,6 +8,7 @@ import useComments from "~hooks/useComments"
 import commentsState from "~states/commentsState"
 import projectState from "~states/projectState"
 import fixPlasmoContainerZIndex from "~utils/fixPlasmoContainerZIndex"
+import focusElement from "~utils/focusElement"
 import observeUrlChange from "~utils/observeUrlChange"
 import type { CommentDocument } from "~utils/types"
 
@@ -18,6 +20,9 @@ const CommentMarkerRenderer = () => {
     CommentDocument[] | []
   >([])
   const childRef = useRef<HTMLDivElement | null>(null)
+  useMessage<string, string>(async (req, res) => {
+    if (req.name == "locate-comment") if (req.body) focusElement(req.body)
+  })
 
   const filterComments = (comments: CommentDocument[]) => {
     const pathname = window.location.pathname

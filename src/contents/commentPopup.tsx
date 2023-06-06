@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useMessage } from "@plasmohq/messaging/hook"
 import cssText from "data-text:~styles/styles.css"
 import type { PlasmoCSConfig } from "plasmo"
 import { useEffect, useRef } from "react"
@@ -36,6 +37,12 @@ const CommentPopup = () => {
     }
   })
   const { addComment, syncComments } = useComments()
+  useMessage<string, string>(async (req, res) => {
+    if (req.name == "add-comment") {
+      toggleAddComment()
+      toggleIsCommentPopupVisible()
+    }
+  })
 
   useEffect(() => {
     // Check if comment popup is going out of viewport and adjust it with offset
