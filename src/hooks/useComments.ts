@@ -1,4 +1,5 @@
 import { Permission, Query, Role, type Models } from "appwrite"
+import commentsState from "~states/commentsState"
 import projectState from "~states/projectState"
 import type { Comment, CommentDocument } from "~utils/types"
 import useDatabase from "./useDatabase"
@@ -40,8 +41,13 @@ const useComments = () => {
       return comment
     } else throw new Error('Active project not found in "useComments" hook')
   }
+  const syncComments = async () => {
+    await allComments().then((comments) => {
+      commentsState.setState({ comments })
+    })
+  }
 
-  return { addComment, allComments, deleteComment }
+  return { addComment, allComments, deleteComment, syncComments }
 }
 
 export default useComments
