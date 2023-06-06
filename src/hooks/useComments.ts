@@ -4,7 +4,7 @@ import type { Comment, CommentDocument } from "~utils/types"
 import useDatabase from "./useDatabase"
 
 const useComments = () => {
-  const { createDocument, getDocumentList } = useDatabase()
+  const { createDocument, getDocumentList, deleteDocument } = useDatabase()
   const { activeProject } = projectState.getState()
 
   const allComments = async () => {
@@ -31,7 +31,17 @@ const useComments = () => {
     } else throw new Error('Active project not found in "useComments" hook')
   }
 
-  return { addComment, allComments }
+  const deleteComment = async ({ commentId }: { commentId: string }) => {
+    if (activeProject) {
+      const comment = await deleteDocument({
+        collectionId: "comments",
+        documentId: commentId
+      })
+      return comment
+    } else throw new Error('Active project not found in "useComments" hook')
+  }
+
+  return { addComment, allComments, deleteComment }
 }
 
 export default useComments

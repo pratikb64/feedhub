@@ -11,7 +11,7 @@ import observeUrlChange from "~utils/observeUrlChange"
 import type { CommentDocument } from "~utils/types"
 
 const CommentMarkerRenderer = () => {
-  const { setComments } = useStore(commentsState)
+  const { setComments, comments } = useStore(commentsState)
   const { isProductFetching } = useStore(projectState)
   const { allComments } = useComments()
   const [currentComments, setCurrentComments] = useState<
@@ -47,6 +47,10 @@ const CommentMarkerRenderer = () => {
       observer.disconnect()
     }
   }, [])
+
+  useEffect(() => {
+    if (comments) filterComments(comments.documents)
+  }, [comments])
 
   return (
     <div ref={childRef}>
