@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react"
 import { BiCommentDetail } from "react-icons/bi"
 import drawerState from "~states/drawerState"
 import getElementByXPath from "~utils/getElementByXPath"
@@ -6,14 +7,52 @@ import setHighlight from "~utils/setHighlight"
 import type { CommentDocument } from "~utils/types"
 
 const CommentMarker = ({ comment }: { comment: CommentDocument }) => {
+  const commentRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    handleOutsideViewport()
+  }, [])
+
+  const onMouseOver = () => {
+    const container = commentRef.current
+    setHighlight(getElementByXPath(comment.xPath))
+    container?.style.setProperty("opacity", "1")
+  }
+
+  const handleOutsideViewport = () => {
+    const preview = commentRef.current
+    if (preview) {
+      const { right, left } = preview.getBoundingClientRect()
+      if (right > window.innerWidth)
+        preview.style.left =
+          left -
+          (right - window.innerWidth) -
+          44 +
+          window.scrollX -
+          comment.positionX +
+          "px"
+    }
+  }
+
+  const onMouseOut = () => {
+    const container = commentRef.current
+    removeHighlight(getElementByXPath(comment.xPath))
+    container?.style.setProperty("opacity", "0")
+  }
+
   return (
     <div
       className="absolute flex cursor-pointer items-center justify-center rounded-full bg-violet-600 p-2"
       style={{ left: comment.positionX, top: comment.positionY }}
-      onMouseOver={() => setHighlight(getElementByXPath(comment.xPath))}
-      onMouseOut={() => removeHighlight(getElementByXPath(comment.xPath))}
+      onMouseOver={onMouseOver}
+      onMouseOut={onMouseOut}
       onClick={() => drawerState.setState({ isVisible: true })}>
       <BiCommentDetail size={16} className="text-white" />
+      <div
+        ref={commentRef}
+        className="pointer-events-none absolute -bottom-11 w-40 rounded-md bg-slate-900 p-2 opacity-0 ring-2 ring-slate-800">
+        {comment.message}
+      </div>
     </div>
   )
 }
