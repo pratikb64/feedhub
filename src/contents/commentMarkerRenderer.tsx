@@ -12,7 +12,7 @@ import type { CommentDocument } from "~utils/types"
 
 const CommentMarkerRenderer = () => {
   const { setComments, comments } = useStore(commentsState)
-  const { isProductFetching } = useStore(projectState)
+  const { isProductFetching, activeProject } = useStore(projectState)
   const { allComments } = useComments()
   const [currentComments, setCurrentComments] = useState<
     CommentDocument[] | []
@@ -52,6 +52,7 @@ const CommentMarkerRenderer = () => {
     if (comments) filterComments(comments.documents)
   }, [comments])
 
+  if (!activeProject) return <></>
   return (
     <div ref={childRef}>
       {currentComments.map((comment) => {
