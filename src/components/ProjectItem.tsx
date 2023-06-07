@@ -12,15 +12,9 @@ import type { ProjectDocument } from "~utils/types"
 
 const ProjectItem = ({
   data,
-  domain,
-  id,
-  teamId,
   getProjects
 }: {
   data: ProjectDocument
-  domain: string
-  id: string
-  teamId: string
   getProjects: () => void
 }) => {
   const [deleteClicked, setDeleteClicked] = useState(false)
@@ -32,23 +26,23 @@ const ProjectItem = ({
 
   const deleteHandler = async () => {
     //TODO: delete all comments relate to respective project
-    await deleteDocument({ collectionId: "projects", documentId: id })
+    await deleteDocument({ collectionId: "projects", documentId: data.$id })
       .then(() => {
         getProjects()
       })
       .catch((err) => {
         console.log(err)
       })
-    await deleteTeam(teamId)
+    await deleteTeam(data.teamId)
   }
 
   const openHandler = async () => {
-    navigate("/project/" + id)
+    navigate("/project/" + data.$id)
     setActiveProject(data)
     if (currentTabData.hostname == data.domain)
       await sendToContentScript({
         name: "activate-project",
-        body: id
+        body: data.$id
       })
   }
 
@@ -56,7 +50,7 @@ const ProjectItem = ({
     <div
       onClick={openHandler}
       className="flex cursor-pointer items-center justify-between rounded-md border-2 border-gray-700 p-2 transition-colors hover:bg-violet-800">
-      <div className="font-semibold">{domain}</div>
+      <div className="font-semibold">{data.domain}</div>
       <div>
         <DropdownMenu.Root
           onOpenChange={() => {

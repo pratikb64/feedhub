@@ -66,11 +66,7 @@ const Home = () => {
             return (
               <ProjectItem
                 data={project as ProjectDocument}
-                domain={project.domain}
-                id={project.$id}
-                key={project.$id}
                 getProjects={getProjects}
-                teamId={project.teamId}
               />
             )
           })}
