@@ -10,7 +10,22 @@ const useTeams = () => {
     await teams.delete(teamId).catch(console.error)
   }
 
-  return { deleteTeam }
+  const getTeamMembers = async (teamId: string) => {
+    const members = await teams.listMemberships(teamId).catch(console.error)
+    if (members) return members
+    return undefined
+  }
+
+  const addMember = async (teamId: string, email: string) => {
+    await teams.createMembership(
+      teamId,
+      ["member"],
+      "https://feedhub.p15.workers.dev",
+      email
+    )
+  }
+
+  return { deleteTeam, getTeamMembers, addMember }
 }
 
 export default useTeams

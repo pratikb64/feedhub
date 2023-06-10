@@ -9,6 +9,7 @@ import useDatabase from "~hooks/useDatabase"
 import useTeams from "~hooks/useTeams"
 import projectState from "~states/projectState"
 import type { ProjectDocument } from "~utils/types"
+import ProjectSettings from "./ProjectSettings"
 
 const ProjectItem = ({
   data,
@@ -92,6 +93,7 @@ const ProjectItem = ({
           </DropdownMenu.Portal>
         </DropdownMenu.Root>
       </div>
+      <ProjectSettings />
     </div>
   )
 }

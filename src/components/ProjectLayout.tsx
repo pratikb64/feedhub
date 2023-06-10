@@ -7,7 +7,7 @@ import projectState from "~states/projectState"
 
 const ProjectLayout = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate()
-  const { activeProject } = useStore(projectState)
+  const { activeProject, toggleShowSettings } = useStore(projectState)
   return (
     <div className="h-[650px] w-[500px] text-base">
       <div className="flex items-center justify-between bg-slate-800 p-4">
@@ -24,9 +24,9 @@ const ProjectLayout = ({ children }: { children: React.ReactNode }) => {
             {activeProject?.domain}
           </div>
         </div>
-        <div>
+        <button onClick={toggleShowSettings} title="Settings">
           <IoMdSettings size={22} />
-        </div>
+        </button>
       </div>
       {children}
     </div>

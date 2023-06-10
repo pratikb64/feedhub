@@ -107,7 +107,7 @@ const Drawer = () => {
             className={`flex items-center justify-center rounded-full p-2.5 text-gray-50 shadow-md ${
               addCommentActivated
                 ? "bg-red-500 hover:bg-red-700 active:bg-red-800"
-                : "bg-violet-500 hover:bg-violet-700 active:bg-violet-800"
+                : "bg-violet-600 hover:bg-violet-700 active:bg-violet-800"
             }`}
             title={addCommentActivated ? "Cancel comment" : "Add comment"}>
             {addCommentActivated ? (

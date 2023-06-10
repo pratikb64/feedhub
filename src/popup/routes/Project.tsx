@@ -6,6 +6,7 @@ import { useStore } from "zustand"
 import Comment from "~components/Comment"
 import LoadingScreen from "~components/LoadingScreen"
 import ProjectLayout from "~components/ProjectLayout"
+import ProjectSettings from "~components/ProjectSettings"
 import useComments from "~hooks/useComments"
 import useCurrentTab from "~hooks/useCurrentTab"
 import commentsState from "~states/commentsState"
@@ -15,7 +16,7 @@ const Project = () => {
   const { syncComments } = useComments()
   const { comments } = useStore(commentsState)
   const [isLoading, setIsLoading] = useState(true)
-  const { activeProject } = useStore(projectState)
+  const { activeProject, showSettings } = useStore(projectState)
   const { data: currentTabData } = useCurrentTab()
 
   useEffect(() => {
@@ -71,6 +72,7 @@ const Project = () => {
           </button>
         )}
       </div>
+      <ProjectSettings />
     </ProjectLayout>
   )
 }

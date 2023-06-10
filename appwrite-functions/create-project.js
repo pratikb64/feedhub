@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
   await teams.createMembership(
     team.$id,
     ["owner"],
-    "https://feedhub.pratikbadhe.com",
+    "https://feedhub.p15.workers.dev",
     user.email,
     USER_ID
   )
