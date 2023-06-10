@@ -46,24 +46,6 @@ const Drawer = () => {
     }
   }
 
-  const getProjects = async () => {
-    const projects = await getDocumentList({
-      collectionId: "projects"
-    })
-    const projectExist = projects.documents.find(
-      (project) => project.domain == window.location.hostname
-    ) as Models.Document & Project
-
-    if (projectExist) {
-      setActiveProject(projectExist)
-      setIsProductFetching(false)
-    }
-  }
-
-  useEffect(() => {
-    getProjects()
-  }, [])
-
   useEffect(() => {
     if (isVisible) syncComments()
   }, [isVisible])
