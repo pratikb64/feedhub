@@ -9,7 +9,7 @@ import useFunctions from "~hooks/useFunctions"
 import type { ProjectDocument } from "~utils/types"
 
 const Home = () => {
-  const { data } = useCurrentTab()
+  const { currentTabData } = useCurrentTab()
   const [isLoading, setIsLoading] = useState(false)
   const { fn } = useFunctions()
   const { getDocumentList } = useDatabase()
@@ -19,7 +19,7 @@ const Home = () => {
   const clickHandler = async () => {
     setIsLoading(true)
     await fn("create-project", {
-      domain: data?.hostname
+      domain: currentTabData?.hostname
     })
     await getProjects()
     setIsLoading(false)
@@ -46,8 +46,8 @@ const Home = () => {
             </div>
             <div className="mt-4 text-center text-sm text-gray-400">
               Create a new project for{" "}
-              <b className="text-violet-500">{data?.hostname}</b> <br /> and get
-              started
+              <b className="text-violet-500">{currentTabData?.hostname}</b>{" "}
+              <br /> and get started
             </div>
             <div className="mt-12">
               <button
@@ -78,7 +78,7 @@ const Home = () => {
             disabled={isLoading}
             title="Create New Project">
             <RiAddFill size={24} />
-            Create New Project for {data.hostname}
+            Create New Project for {currentTabData.hostname}
           </button>
         </div>
       </div>

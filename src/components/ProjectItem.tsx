@@ -23,7 +23,7 @@ const ProjectItem = ({
   const { deleteTeam } = useTeams()
   const navigate = useNavigate()
   const { setActiveProject } = useStore(projectState)
-  const { data: currentTabData } = useCurrentTab()
+  const { currentTabData } = useCurrentTab()
 
   const deleteHandler = async () => {
     //TODO: delete all comments relate to respective project
@@ -84,7 +84,7 @@ const ProjectItem = ({
                     onClick={() => setDeleteClicked(true)}
                     className="flex w-full items-center gap-1  p-2 font-semibold text-red-500"
                     title="Delete project">
-                    <BsTrash size={18} />
+                    <BsTrash size={16} />
                     Delete
                   </button>
                 </div>
