@@ -41,11 +41,10 @@ const CommentMarkerRenderer = () => {
 
     // A hack to adjust plasmo container zIndex to avoid overlap with side drawer
     fixPlasmoContainerZIndex(childRef.current)
-  }, [isProductFetching])
+  }, [isProductFetching, activeProject?.$id])
 
   useEffect(() => {
     const observer = observeUrlChange((url) => {
-      const comments = commentsState.getState().comments
       if (comments) filterComments(comments.documents)
     })
     return () => {

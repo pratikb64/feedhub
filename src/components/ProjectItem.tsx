@@ -48,10 +48,10 @@ const ProjectItem = ({
   }
 
   return (
-    <div
-      onClick={openHandler}
-      className="flex cursor-pointer items-center justify-between rounded-md border-2 border-gray-700 p-2 transition-colors hover:bg-violet-800">
-      <div className="font-semibold">{data.domain}</div>
+    <div className="flex cursor-pointer items-center justify-between rounded-md border-2 border-gray-700 p-2 transition-colors hover:bg-violet-800">
+      <div onClick={openHandler} className="w-full font-semibold">
+        {data.domain}
+      </div>
       <div>
         <DropdownMenu.Root
           onOpenChange={() => {

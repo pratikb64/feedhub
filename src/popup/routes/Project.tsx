@@ -17,7 +17,7 @@ const Project = () => {
   const { comments } = useStore(commentsState)
   const [isLoading, setIsLoading] = useState(true)
   const { activeProject, showSettings } = useStore(projectState)
-  const { data: currentTabData } = useCurrentTab()
+  const { currentTabData } = useCurrentTab()
 
   useEffect(() => {
     syncComments().then(() => {
