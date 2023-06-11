@@ -1,8 +1,9 @@
 // @ts-check
 const sdk = require("node-appwrite")
+const { Client, Users, Query } = sdk
 
 module.exports = async (req, res) => {
-  const client = new sdk.Client()
+  const client = new Client()
 
   if (
     !req.variables["APPWRITE_FUNCTION_ENDPOINT"] ||
@@ -18,16 +19,21 @@ module.exports = async (req, res) => {
       .setKey(req.variables["APPWRITE_FUNCTION_API_KEY"])
       .setSelfSigned(true)
   }
-  const users = new sdk.Users(client)
+  const users = new Users(client)
 
   const payload = JSON.parse(`${req.payload}`)
 
-  const { userId } = payload
+  const { email } = payload
 
-  const user = await users.get(userId)
-  console.log(user)
+  const user = await users.list([Query.equal("email", [email])])
+
+  if (user.total == 0)
+    return res.json({
+      message: "User does not exist",
+      status: 404
+    })
 
   res.json({
-    message: "Team Member created!"
+    message: "User exists"
   })
 }

@@ -1,11 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as Tabs from "@radix-ui/react-tabs"
+import type { AppwriteException } from "appwrite"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { RiCloseFill } from "react-icons/ri"
 import { z } from "zod"
 import { useStore } from "zustand"
+import useFunctions from "~hooks/useFunctions"
 import useTeams from "~hooks/useTeams"
 import projectState from "~states/projectState"
 import MemberItem from "./MemberItem"
@@ -25,6 +27,7 @@ const ProjectSettings = () => {
       email: ""
     }
   })
+  const { fn } = useFunctions()
 
   useEffect(() => {
     if (activeProject) {
@@ -32,14 +35,27 @@ const ProjectSettings = () => {
     }
   }, [])
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const id = toast.loading("Adding member...")
-    addMember(data.email)
-      .then((d) => {
+
+    const userExists = await fn("check-user-exists", {
+      email: data.email
+    }).catch((e) => {
+      console.error(JSON.stringify(e, null, 2))
+      toast.error(`Error occurred while checking user "${data.email}"!`, { id })
+    })
+
+    if (userExists?.statusCode == 404)
+      return toast.error(`User "${data.email}" is not registered!`, { id })
+
+    await addMember(data.email)
+      .then(() => {
         toast.success("Member invited successfully", { id })
         toggleShowSettings()
       })
-      .catch((e) => toast.error("Failed to add member!", { id }))
+      .catch((e: AppwriteException) => {
+        toast.error(e?.message, { id })
+      })
   }
 
   return (
