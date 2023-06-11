@@ -1,5 +1,6 @@
 import type { Models } from "appwrite"
 import { useEffect, useState } from "react"
+import { toast } from "react-hot-toast"
 import { RiAddFill } from "react-icons/ri"
 import Layout from "~components/Layout"
 import ProjectItem from "~components/ProjectItem"
@@ -18,9 +19,20 @@ const Home = () => {
 
   const clickHandler = async () => {
     setIsLoading(true)
+    const id = toast.loading("Creating project...")
     await fn("create-project", {
       domain: currentTabData?.hostname
     })
+      .then(() => {
+        toast.success("Project created!", {
+          id
+        })
+      })
+      .catch(() => {
+        toast.error("Failed to create project!", {
+          id
+        })
+      })
     await getProjects()
     setIsLoading(false)
   }

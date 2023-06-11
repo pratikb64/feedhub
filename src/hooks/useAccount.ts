@@ -13,6 +13,7 @@ const useAccount = () => {
   const fetchUser = async () => {
     const userData = await getAccount()
     if (userData) setUser(userData)
+    else setUser(null)
     setIsLoading(false)
   }
 
@@ -53,6 +54,7 @@ const useAccount = () => {
       await account.deleteSession("current")
       setUser(null)
     } catch (error) {
+      setUser(null)
       console.error(JSON.stringify(error, null, 2))
     }
   }

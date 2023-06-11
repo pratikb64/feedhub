@@ -1,12 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { sendToContentScript } from "@plasmohq/messaging"
 import * as Tabs from "@radix-ui/react-tabs"
 import type { AppwriteException } from "appwrite"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { RiCloseFill } from "react-icons/ri"
+import { useNavigate } from "react-router-dom"
 import { z } from "zod"
 import { useStore } from "zustand"
+import useDatabase from "~hooks/useDatabase"
 import useFunctions from "~hooks/useFunctions"
 import useTeams from "~hooks/useTeams"
 import projectState from "~states/projectState"
@@ -19,8 +22,14 @@ const formSchema = z.object({
 const ProjectSettings = () => {
   const { activeProject, showSettings, toggleShowSettings } =
     useStore(projectState)
-  const { syncTeamMembers, addMember, teamMembers, isOwner, deleteMember } =
-    useTeams()
+  const {
+    syncTeamMembers,
+    addMember,
+    teamMembers,
+    isOwner,
+    deleteMember,
+    deleteTeam
+  } = useTeams()
   const { register, handleSubmit } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -28,6 +37,8 @@ const ProjectSettings = () => {
     }
   })
   const { fn } = useFunctions()
+  const { deleteDocument } = useDatabase()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (activeProject) {
@@ -56,6 +67,26 @@ const ProjectSettings = () => {
       .catch((e: AppwriteException) => {
         toast.error(e?.message, { id })
       })
+  }
+
+  const deleteHandler = async () => {
+    if (activeProject)
+      await deleteDocument({
+        collectionId: "projects",
+        documentId: activeProject.$id
+      })
+        .then(async () => {
+          await sendToContentScript({
+            name: "activate-project",
+            body: activeProject.$id
+          })
+          await deleteTeam()
+          toggleShowSettings()
+          navigate("/")
+        })
+        .catch((err) => {
+          console.log(err)
+        })
   }
 
   return (
@@ -108,11 +139,10 @@ const ProjectSettings = () => {
                 </div>
               </div>
               {isOwner && (
-                <div className="flex justify-between">
-                  <button className="rounded-md bg-violet-600 p-2 px-4 text-sm font-bold text-white hover:bg-violet-700 active:bg-violet-800">
-                    Save
-                  </button>
-                  <button className="rounded-md bg-red-600 p-2 px-4 text-sm font-semibold text-white hover:bg-red-700 active:bg-red-800 disabled:bg-gray-500">
+                <div className="flex justify-end">
+                  <button
+                    onClick={deleteHandler}
+                    className="rounded-md bg-red-600 p-2 px-4 text-sm font-semibold text-white hover:bg-red-700 active:bg-red-800 disabled:bg-gray-500">
                     Delete Project
                   </button>
                 </div>

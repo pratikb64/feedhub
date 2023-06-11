@@ -27,7 +27,7 @@ const useComments = () => {
         data,
         permissions: [
           Permission.read(Role.team(activeProject.teamId)),
-          Permission.delete(Role.team(activeProject.teamId, "owner"))
+          Permission.delete(Role.team(activeProject.teamId))
         ]
       })
       return comment

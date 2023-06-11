@@ -8,6 +8,7 @@ import { BiCommentAdd, BiCommentX } from "react-icons/bi"
 import { RiCloseFill } from "react-icons/ri"
 import { useStore } from "zustand"
 import Comment from "~components/Comment"
+import useAccount from "~hooks/useAccount"
 import useComments from "~hooks/useComments"
 import useDatabase from "~hooks/useDatabase"
 import commentPopupState from "~states/commentPopupState"
@@ -32,6 +33,7 @@ const Drawer = () => {
   const { addCommentActivated } = useStore(commentPopupState)
   const { comments } = useStore(commentsState)
   const { syncComments } = useComments()
+  const { fetchUser } = useAccount()
 
   const activateProjectById = async (id: string) => {
     const projects = await getDocumentList({
@@ -47,7 +49,10 @@ const Drawer = () => {
   }
 
   useEffect(() => {
-    if (isVisible) syncComments()
+    if (isVisible) {
+      syncComments()
+      fetchUser()
+    }
   }, [isVisible])
 
   const closeProject = () => {

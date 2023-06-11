@@ -51,7 +51,8 @@ module.exports = async (req, res) => {
     [
       Permission.read(Role.team(team.$id)),
       Permission.update(Role.team(team.$id, "owner")),
-      Permission.delete(Role.team(team.$id, "owner"))
+      Permission.delete(Role.team(team.$id, "owner")),
+      Permission.write(Role.team(team.$id))
     ]
   )
 
