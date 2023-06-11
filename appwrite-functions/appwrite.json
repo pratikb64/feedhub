@@ -1,0 +1,36 @@
+{
+    "projectId": "feedhub",
+    "projectName": "feedhub",
+    "functions": [
+        {
+            "$id": "create-project",
+            "name": "create-project",
+            "runtime": "node-16.0",
+            "path": "functions/create-project",
+            "entrypoint": "src/index.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 15
+        },
+        {
+            "$id": "check-user-exists",
+            "name": "check-user-exists",
+            "runtime": "node-16.0",
+            "path": "functions/check-user-exists",
+            "entrypoint": "src/index.js",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "execute": [],
+            "events": [],
+            "schedule": "",
+            "timeout": 15
+        }
+    ]
+}

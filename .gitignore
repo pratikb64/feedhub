@@ -5,8 +5,7 @@
 /node_modules
 /.pnp
 .pnp.js
-/appwrite-functions/node_modules
-/appwrite-functions/appwrite.json
+/appwrite-functions/functions/*/node_modules
 
 # testing
 /coverage
