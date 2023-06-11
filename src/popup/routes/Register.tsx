@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { toast } from "react-hot-toast"
 import { Link, useNavigate } from "react-router-dom"
 import * as z from "zod"
 import AuthLayout from "~components/AuthLayout"
@@ -27,6 +28,7 @@ const Register = () => {
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     signUp(data).then((d) => {
+      toast.success("Registered successfully")
       navigate("/login")
     })
   }

@@ -7,7 +7,6 @@ const useAccount = () => {
   const { getClient } = useStore(appwriteState)
   const [user, setUser] = useState<Models.User<Models.Preferences> | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [error, setError] = useState<string | null>(null)
   const client = getClient()
   const account = new Account(client)
 
@@ -54,18 +53,18 @@ const useAccount = () => {
       await account.deleteSession("current")
       setUser(null)
     } catch (error) {
-      setError(JSON.stringify(error))
+      console.error(JSON.stringify(error, null, 2))
     }
   }
 
   async function getAccount() {
     const userData = await account.get().catch((error) => {
-      setError(error)
+      setUser(null)
     })
     return userData
   }
 
-  return { user, isLoading, error, register, login, logout }
+  return { user, isLoading, register, login, logout, fetchUser }
 }
 
 export default useAccount

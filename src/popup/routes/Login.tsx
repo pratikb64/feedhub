@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { toast } from "react-hot-toast"
 import { Link, useNavigate } from "react-router-dom"
 import * as z from "zod"
 import AuthLayout from "~components/AuthLayout"
@@ -12,7 +13,7 @@ const formSchema = z.object({
 
 const Login = () => {
   const navigate = useNavigate()
-  const { login, user, isLoading } = useAccount()
+  const { login } = useAccount()
   const { register, handleSubmit, formState, setError } = useForm<
     z.infer<typeof formSchema>
   >({
@@ -24,14 +25,17 @@ const Login = () => {
   })
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
+    const id = toast.loading("Logging in...")
     login(data).then((res) => {
       if (res?.error) {
         setError("root", {
           //@ts-ignore
           message: res.error.response.message
         })
+        toast.error("Login failed", { id })
       }
       if (res?.session) {
+        toast.success("Login successful", { id })
         navigate("/")
       }
     })

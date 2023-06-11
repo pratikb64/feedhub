@@ -12,7 +12,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     if (isLoading) return
     if (user) navigate("/")
     else navigate("/login")
-  }, [user, isLoading])
+  }, [user?.$id, isLoading])
 
   return (
     <div className="h-[650px] w-[500px] text-base">

@@ -33,12 +33,13 @@ const ProjectSettings = () => {
   }, [])
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
+    const id = toast.loading("Adding member...")
     addMember(data.email)
       .then((d) => {
-        toast.success("Member added successfully")
+        toast.success("Member invited successfully", { id })
         toggleShowSettings()
       })
-      .catch((e) => toast.error("Failed to add member!"))
+      .catch((e) => toast.error("Failed to add member!", { id }))
   }
 
   return (
@@ -53,7 +54,7 @@ const ProjectSettings = () => {
           className={`absolute left-1/2  w-[90%] -translate-x-1/2 -translate-y-1/2 transform  rounded-lg bg-slate-900 p-4 shadow-lg ring-2 ring-slate-800 transition-all ease-in-out ${
             showSettings ? "top-1/2" : "top-[40%]"
           }`}
-          defaultValue="members">
+          defaultValue="general">
           <Tabs.List aria-label="Manage your account">
             <Tabs.Trigger
               className="border-solid border-violet-500 p-3 data-[state=active]:border-b-2"
