@@ -1,13 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as Tabs from "@radix-ui/react-tabs"
-import { type Models } from "appwrite"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-hot-toast"
 import { RiCloseFill } from "react-icons/ri"
 import { z } from "zod"
 import { useStore } from "zustand"
 import useTeams from "~hooks/useTeams"
 import projectState from "~states/projectState"
+import MemberItem from "./MemberItem"
 
 const formSchema = z.object({
   email: z.string().email()
@@ -16,8 +17,8 @@ const formSchema = z.object({
 const ProjectSettings = () => {
   const { activeProject, showSettings, toggleShowSettings } =
     useStore(projectState)
-  const [members, setMembers] = useState<Models.MembershipList>()
-  const { getTeamMembers, addMember } = useTeams()
+  const { syncTeamMembers, addMember, teamMembers, isOwner, deleteMember } =
+    useTeams()
   const { register, handleSubmit } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -27,18 +28,17 @@ const ProjectSettings = () => {
 
   useEffect(() => {
     if (activeProject) {
-      getTeamMembers(activeProject.teamId).then((res) => {
-        if (res) setMembers(res)
-      })
+      syncTeamMembers()
     }
   }, [])
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    if (activeProject) {
-      addMember(activeProject.teamId, data.email)
-        .then((d) => console.log(d))
-        .catch((e) => console.log(e))
-    } else throw Error("No active project")
+    addMember(data.email)
+      .then((d) => {
+        toast.success("Member added successfully")
+        toggleShowSettings()
+      })
+      .catch((e) => toast.error("Failed to add member!"))
   }
 
   return (
@@ -90,70 +90,55 @@ const ProjectSettings = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex justify-between">
-                <button className="rounded-md bg-violet-600 p-2 px-4 text-sm font-bold text-white hover:bg-violet-700 active:bg-violet-800">
-                  Save
-                </button>
-                <button className="rounded-md bg-red-600 p-2 px-4 text-sm font-semibold text-white hover:bg-red-700 active:bg-red-800 disabled:bg-gray-500">
-                  Delete Project
-                </button>
-              </div>
+              {isOwner && (
+                <div className="flex justify-between">
+                  <button className="rounded-md bg-violet-600 p-2 px-4 text-sm font-bold text-white hover:bg-violet-700 active:bg-violet-800">
+                    Save
+                  </button>
+                  <button className="rounded-md bg-red-600 p-2 px-4 text-sm font-semibold text-white hover:bg-red-700 active:bg-red-800 disabled:bg-gray-500">
+                    Delete Project
+                  </button>
+                </div>
+              )}
             </div>
           </Tabs.Content>
           <Tabs.Content className="mt-4 h-96 overflow-auto" value="members">
             <div>
-              <label className="text-sm" htmlFor="invite-member">
-                Add member to your project
-              </label>
-              <div className="my-1 text-xs text-slate-500">
-                Make sure the user is already registered to feedhub!
-              </div>
-              <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="mt-2 flex gap-4">
-                <input
-                  className="w-full rounded-md p-2"
-                  id="invite-member"
-                  type="email"
-                  required
-                  {...register("email")}
-                />
-                <button className="rounded-md bg-violet-600 p-2 px-4 text-sm font-bold text-white hover:bg-violet-700 active:bg-violet-800">
-                  Invite
-                </button>
-              </form>
+              {isOwner && (
+                <>
+                  <label className="text-sm" htmlFor="invite-member">
+                    Add member to your project
+                  </label>
+                  <div className="my-1 text-xs text-slate-500">
+                    Make sure the user is already registered to feedhub!
+                  </div>
+                  <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="mt-2 flex gap-4">
+                    <input
+                      className="w-full rounded-md p-2"
+                      id="invite-member"
+                      type="email"
+                      required
+                      {...register("email")}
+                    />
+                    <button className="rounded-md bg-violet-600 p-2 px-4 text-sm font-bold text-white hover:bg-violet-700 active:bg-violet-800">
+                      Invite
+                    </button>
+                  </form>
+                </>
+              )}
               <div className="mt-6">
                 <div className="font-bold">Users</div>
                 <div className="mt-4 flex flex-col gap-3">
-                  {members?.memberships.map((member) => (
-                    <div
-                      key={member.userId}
-                      className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <div>
-                          <img
-                            className="w-10"
-                            src={`https://ui-avatars.com/api/?rounded=true&format=png&name=${member.userName}`}
-                            alt=""
-                          />
-                        </div>
-                        <div>
-                          <div className="capitalize">{member.userName}</div>
-                          <div className="text-xs text-slate-500">
-                            {member.userEmail}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex gap-1">
-                        {member.roles.map((role) => (
-                          <div
-                            key={role}
-                            className="flex h-max items-center justify-center rounded-full bg-slate-700 px-2 py-1 text-xs">
-                            {role.toUpperCase()}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                  {teamMembers?.memberships.map((member) => (
+                    <MemberItem
+                      key={member.$id}
+                      member={member}
+                      isOwner={isOwner}
+                      deleteMember={deleteMember}
+                      syncTeamMembers={syncTeamMembers}
+                    />
                   ))}
                 </div>
               </div>

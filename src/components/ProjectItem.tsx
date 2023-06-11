@@ -34,7 +34,7 @@ const ProjectItem = ({
       .catch((err) => {
         console.log(err)
       })
-    await deleteTeam(data.teamId)
+    await deleteTeam()
   }
 
   const openHandler = async () => {

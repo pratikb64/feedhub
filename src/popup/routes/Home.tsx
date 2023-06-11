@@ -67,6 +67,7 @@ const Home = () => {
               <ProjectItem
                 data={project as ProjectDocument}
                 getProjects={getProjects}
+                key={project.$id}
               />
             )
           })}
