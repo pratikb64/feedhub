@@ -26,7 +26,7 @@ const CommentPopup = () => {
     toggleIsCommentPopupVisible
   } = useStore(commentPopupState)
   const { activeProject } = useStore(projectState)
-  const { user } = useAccount()
+  const { user, fetchUser } = useAccount()
   const containerRef = useRef<HTMLDivElement | null>(null)
   const { register, handleSubmit, formState, reset } = useForm<
     z.infer<typeof formSchema>
@@ -85,6 +85,10 @@ const CommentPopup = () => {
     toggleAddComment()
     reset()
   }
+
+  useEffect(() => {
+    fetchUser()
+  }, [isVisible, activeProject?.$id])
 
   if (!isVisible) return <></>
   return (

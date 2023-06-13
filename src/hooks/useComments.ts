@@ -17,7 +17,7 @@ const useComments = () => {
         queries: [Query.equal("project", [activeProject.$id])]
       })) as Models.DocumentList<CommentDocument>
       return comments
-    } else throw new Error('Active project not found in "useComments" hook')
+    } else console.error('Active project not found in "useComments" hook')
   }
 
   const addComment = async (data: Comment) => {
@@ -31,7 +31,7 @@ const useComments = () => {
         ]
       })
       return comment
-    } else throw new Error('Active project not found in "useComments" hook')
+    } else console.error('Active project not found in "useComments" hook')
   }
 
   const deleteComment = async ({ commentId }: { commentId: string }) => {
@@ -41,11 +41,11 @@ const useComments = () => {
         documentId: commentId
       })
       return comment
-    } else throw new Error('Active project not found in "useComments" hook')
+    } else console.error('Active project not found in "useComments" hook')
   }
   const syncComments = async () => {
     await allComments().then((comments) => {
-      setComments(comments)
+      if (comments) setComments(comments)
     })
   }
 

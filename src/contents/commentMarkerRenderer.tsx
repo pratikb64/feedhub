@@ -35,8 +35,10 @@ const CommentMarkerRenderer = () => {
   useEffect(() => {
     if (!isProductFetching)
       allComments().then((comments) => {
-        setComments(comments)
-        filterComments(comments.documents)
+        if (comments) {
+          setComments(comments)
+          filterComments(comments.documents)
+        }
       })
 
     // A hack to adjust plasmo container zIndex to avoid overlap with side drawer
