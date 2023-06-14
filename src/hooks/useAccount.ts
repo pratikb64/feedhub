@@ -12,9 +12,11 @@ const useAccount = () => {
 
   const fetchUser = async () => {
     const userData = await getAccount()
-    if (userData) setUser(userData)
-    else setUser(null)
+    if (userData) {
+      setUser(userData)
+    } else setUser(null)
     setIsLoading(false)
+    return userData
   }
 
   useEffect(() => {
@@ -62,6 +64,7 @@ const useAccount = () => {
   async function getAccount() {
     const userData = await account.get().catch((error) => {
       setUser(null)
+      return null
     })
     return userData
   }

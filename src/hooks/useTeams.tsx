@@ -3,10 +3,12 @@ import { useState } from "react"
 import { useStore } from "zustand"
 import appwriteState from "~states/appwrite"
 import projectState from "~states/projectState"
+import useAccount from "./useAccount"
 
 const useTeams = () => {
   const { getClient } = useStore(appwriteState)
   const { activeProject } = useStore(projectState)
+  const { user, fetchUser } = useAccount()
   const teams = new Teams(getClient())
   const [isOwner, setIsOwner] = useState(false)
   const [teamMembers, setTeamMembers] = useState<Models.MembershipList>()
@@ -22,9 +24,14 @@ const useTeams = () => {
       const members = await teams
         .listMemberships(activeProject?.teamId)
         .catch(console.error)
+      let userData: Models.User<Models.Preferences> | null
+      if (!user) {
+        userData = await fetchUser()
+      }
       if (members) {
         members.memberships.forEach((member) => {
-          if (member.roles.includes("owner")) setIsOwner(true)
+          if (member.roles.includes("owner"))
+            if (member.userId === userData?.$id) setIsOwner(true)
         })
         setTeamMembers(members)
       }
