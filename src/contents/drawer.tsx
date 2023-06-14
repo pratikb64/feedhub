@@ -28,6 +28,8 @@ const Drawer = () => {
 
     if (req.name == "activate-project")
       if (req.body && req.body.trim() != "") activateProjectById(req.body)
+
+    if (req.name == "deactivate-project") setActiveProject(undefined)
   })
   const { getDocumentList } = useDatabase()
   const { addCommentActivated } = useStore(commentPopupState)

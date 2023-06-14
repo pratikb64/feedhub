@@ -1,3 +1,4 @@
+import { sendToContentScript } from "@plasmohq/messaging"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { toast } from "react-hot-toast"
 import { BiLogOut } from "react-icons/bi"
@@ -14,6 +15,9 @@ const Navbar = () => {
     const id = toast.loading("Logging out...")
     logout().then(() => {
       toast.success("Logged out!", { id })
+      sendToContentScript({
+        name: "deactivate-project"
+      })
       navigate("/login")
     })
   }
