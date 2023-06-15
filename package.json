@@ -1,7 +1,7 @@
 {
   "name": "feedhub",
   "displayName": "Feedhub",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A powerful tool that makes it easy for anyone to leave feedback on any website",
   "author": "Pratik Badhe",
   "scripts": {

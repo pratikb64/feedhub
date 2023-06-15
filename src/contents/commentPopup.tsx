@@ -40,7 +40,6 @@ const CommentPopup = () => {
   useMessage<string, string>(async (req, res) => {
     if (req.name == "add-comment") {
       toggleAddComment()
-      toggleIsCommentPopupVisible()
     }
   })
 
