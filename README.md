@@ -17,6 +17,7 @@
 Feedhub is an innovative browser extension designed to enhance collaboration among developers, designers, and stakeholders by facilitating quick feedback sharing on websites. With Feedhub, users can effortlessly share ideas, express thoughts, and ensure everyone stays informed about the latest changes, resulting in increased productivity and efficiency.
 </p>
 
+## Demo
 [![IMAGE ALT TEXT](https://i.ytimg.com/vi/tpOS6NZqaso/hqdefault.jpg)](http://www.youtube.com/watch?v=tpOS6NZqaso "Feedhub product demo")
 
 ## Login page
