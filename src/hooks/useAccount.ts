@@ -43,7 +43,7 @@ const useAccount = () => {
     password: string
   }): Promise<{ session?: Models.Session; error?: AppwriteException }> {
     try {
-      let session = await account.createEmailSession(email, password)
+      let session = await account.createEmailPasswordSession(email, password)
       await fetchUser()
       return { session }
     } catch (error) {

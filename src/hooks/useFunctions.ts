@@ -12,8 +12,8 @@ const useFunctions = () => {
       JSON.stringify(data)
     )
     return {
-      response: JSON.parse(response.response),
-      statusCode: response.statusCode
+      response: JSON.parse(response.responseBody),
+      statusCode: response.responseStatusCode
     }
   }
 

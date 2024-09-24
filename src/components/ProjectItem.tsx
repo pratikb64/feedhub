@@ -49,14 +49,15 @@ const ProjectItem = ({
 
   return (
     <div className="flex cursor-pointer items-center justify-between rounded-md border-2 border-gray-700 p-2 transition-colors hover:bg-violet-800">
-      <div onClick={openHandler} className="w-full font-semibold">
+      <div className="w-full font-semibold" onClick={openHandler}>
         {data.domain}
       </div>
       <div>
         <DropdownMenu.Root
           onOpenChange={() => {
             setDeleteClicked(false)
-          }}>
+          }}
+          modal={false}>
           <DropdownMenu.Trigger asChild>
             <button
               aria-label="Profile menu"
@@ -68,7 +69,10 @@ const ProjectItem = ({
           <DropdownMenu.Portal>
             <DropdownMenu.Content
               className="w-32 rounded-md bg-slate-800 p-2 shadow-lg"
-              sideOffset={5}>
+              sideOffset={2}
+              collisionPadding={{
+                right: 15
+              }}>
               {deleteClicked ? (
                 <DropdownMenu.Item className="rounded-md outline-none hover:bg-slate-700">
                   <button

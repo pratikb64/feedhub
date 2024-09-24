@@ -43,8 +43,10 @@ const useTeams = () => {
       await teams.createMembership(
         activeProject?.teamId,
         ["member"],
-        "https://feedhub.p15.workers.dev",
-        email
+        email,
+        undefined,
+        undefined,
+        "http://66f29160332d2763bc51.appwrite.global"
       )
     } else throw new Error('Active project not found in "useTeams" hook')
   }

@@ -127,6 +127,7 @@ const ProjectSettings = () => {
                     id="project-name"
                     value={activeProject?.domain}
                     required
+                    disabled
                   />
                 </div>
                 <div className="flex flex-col gap-2">

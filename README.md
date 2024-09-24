@@ -12,12 +12,15 @@
     <img alt="Follow Pratik Badhe on Twitter" src="https://img.shields.io/twitter/follow/pratikb64?logo=twitter"/>
   </a>
 </p>
-<h1 align="center">Feedhub : Appwrite Hashnode Hackathon Project</h1>
+<h1 align="center">Feedhub</h1>
 <p align="center">
 Feedhub is an innovative browser extension designed to enhance collaboration among developers, designers, and stakeholders by facilitating quick feedback sharing on websites. With Feedhub, users can effortlessly share ideas, express thoughts, and ensure everyone stays informed about the latest changes, resulting in increased productivity and efficiency.
 </p>
 
-## Demo
+## Video Demo
+
+http://www.youtube.com/watch?v=tpOS6NZqaso
+
 [![IMAGE ALT TEXT](https://i.ytimg.com/vi/tpOS6NZqaso/hqdefault.jpg)](http://www.youtube.com/watch?v=tpOS6NZqaso "Feedhub product demo")
 
 ## Login page

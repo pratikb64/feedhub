@@ -42,15 +42,24 @@ const CommentMarker = ({ comment }: { comment: CommentDocument }) => {
 
   return (
     <div
-      className="absolute flex cursor-pointer items-center justify-center rounded-full bg-violet-600 p-2"
+      className="absolute flex cursor-pointer items-center justify-center rounded-full bg-violet-600 p-2 text-white"
       style={{ left: comment.positionX, top: comment.positionY }}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
       onClick={() => drawerState.setState({ isVisible: true })}>
-      <BiCommentDetail size={16} className="text-white" />
+      <BiCommentDetail size={16} className="" />
       <div
         ref={commentRef}
-        className="pointer-events-none absolute -bottom-11 w-40 rounded-md bg-slate-900 p-2 opacity-0 ring-2 ring-slate-800">
+        className="pointer-events-none absolute bottom-[-110px] w-44 rounded-md bg-slate-900 p-2.5 opacity-0 ring-2 ring-slate-800">
+        <div>
+          <div className="text-xs font-bold text-slate-300">
+            {comment.owner}
+          </div>
+          <div className="text-xs text-slate-500">
+            {new Date(comment.$createdAt).toLocaleString()}
+          </div>
+        </div>
+        <hr className="my-2 border-slate-500" />
         {comment.message}
       </div>
     </div>
